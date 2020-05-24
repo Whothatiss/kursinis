@@ -257,19 +257,6 @@ function animate() {
     controls.moveForward( velocity.z * delta );  
 
     controls.getObject().position.y += velocity.y * delta; 
-
- 
-    raycaster.set( controls.getObject().position, scene.down);
-
-    let intersects = raycaster.intersectObjects( objects.concat( [ground] ));
-      
-    if (intersects.length == 0 || intersects[0].distance < 10){
-      velocity.y = Math.max(0, velocity.y);
-      
-      let y = 10;
-      if (intersects.length > 0) y = intersects[0].point.y + 10;
-
-      controls.getObject().position.y = y;
     }
     
     prevTime = time;
