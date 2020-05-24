@@ -212,8 +212,8 @@ function animate() {
         let time = performance.now();
         let delta = (time - prevTime) / 1000;
 
-        velocity.x -= velocity.x * player_speed * delta;
-        velocity.z -= velocity.z * player_speed * delta;
+        velocity.x -= velocity.x * 10 * delta;
+        velocity.z -= velocity.z * 10 * delta;
 
         direction.z = Number(moveBackward) - Number(moveForward);
         direction.x = Number(moveRight) - Number(moveLeft);
