@@ -207,61 +207,69 @@ function update() {
 
 function animate() {
 
-  win.style.visibility = "hidden";
-  begin.style.visibility = "hidden";
-  
-  if (new THREE.Box3().setFromObject(PlBox).intersectsBox(BoundBoxExit)) {
-    win.style.visibility = "visible";
-  } 
-  if (new THREE.Box3().setFromObject(PlBox).intersectsBox(BoundBoxStart)) {
-    begin.style.visibility = "visible";
-  } 
+    if (controls.isLocked === true) {
+
+        let time = performance.now();
+        let delta = (time - prevTime) / 1000;
+
+        velocity.x -= velocity.x * player_speed * delta;
+        velocity.z -= velocity.z * player_speed * delta;
+
+        direction.z = Number(moveBackward) - Number(moveForward);
+        direction.x = Number(moveRight) - Number(moveLeft);
+        direction.normalize();
 
 
-  if (controls.isLocked === true) {
-    
-        
 
-    let time = performance.now();
-    let delta = ( time - prevTime ) / 1000;
-    
-    velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;
-    
-    direction.z = Number( moveBackward ) - Number( moveForward );
-    direction.x = Number( moveRight ) - Number( moveLeft );
-    direction.normalize(); 
+        if (direction.length() > 0) {
+
+            //let rotatedDirection = direction.clone();
+            //rotatedDirection.applyEuler(controls.getObject().rotation);
+
+            velocity.normalize();
+            raycaster.set(controls.getObject().position, velocity);
+
+            //console.log(controls.getObject().position);
+
+            let directionCast = raycaster.intersectObjects(objects);
+            //console.log(raycaster.intersectObjects(objects));
+
+            if (directionCast.length > 0 && directionCast[0].distance < 20000) {
+                console.log(directionCast.length);
+                console.log(directionCast[0].distance);
+                direction.multiplyScalar(0);
+                velocity.x *= 0;
+                velocity.z *= 0;
+            }
+
+        }
+
+        velocity.z -= direction.z * 200.0 * delta;
+        velocity.x += direction.x * 200.0 * delta;
+
+        controls.moveRight(velocity.x * delta);
+        controls.moveForward(velocity.z * delta);
+
+        controls.getObject().position.y += velocity.y * delta;
 
 
-   
-    if (direction.length() > 0){
-      
-      let rotatedDirection = direction.clone();
-      rotatedDirection.applyEuler( controls.getObject().rotation );
-      
-      raycaster.set( controls.getObject().position, rotatedDirection);      
-      let directionCast = raycaster.intersectObjects( objects );
-      
-      if (directionCast.length > 0 && directionCast[0].distance < 2){
-        direction.multiplyScalar(0);
-        velocity.x *= 0;
-        velocity.z *= 0;
-      }
-      
+        //raycaster.set(controls.getObject().position, scene);
+
+        //let intersects = raycaster.intersectObjects(objects.concat([ground]));
+        //console.log(raycaster.intersectObjects(objects.concat([ground])));
+
+        //if (intersects.length == 0 || intersects[0].distance < 10) {
+        //    velocity.y = Math.max(0, velocity.y);
+
+        //    let y = 10;
+        //    if (intersects.length > 0) y = intersects[0].point.y + 10;
+
+        //    controls.getObject().position.y = y;
+        //}
+
+        prevTime = time;
+
     }
-    
-    velocity.z -= direction.z * 600.0 * delta;      
-    velocity.x += direction.x * 600.0 * delta;
-
-    controls.moveRight( velocity.x * delta );
-    controls.moveForward( velocity.z * delta );  
-
-    controls.getObject().position.y += velocity.y * delta; 
-    }
-    
-    prevTime = time;
-
-  }  
 }
 
 
