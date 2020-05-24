@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Computer Graphics</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+
+  <!-- Libraries -->
+  <script src="lib/three.js"></script>
+	<!-- <script src="lib/three.min.js"></script> -->
+  <script src="lib/WebGL.js"></script>
+  <script src="lib/stats.min.js"></script>
+  <script src="lib/controls/PointerLockControls.js"></script>
+  <script src="Lib/Maze.js"></script>
+  <!-- <script src="lib/water/Reflector.js"></script>
+  <script src="lib/water/Refractor.js"></script>
+  <script src="lib/water/Water2.js"></script>
+  <script src="lib/dat.gui.min.js"></script>
+  <script src="lib/loaders/OBJLoader.js"></script>
+  <script src="lib/loaders/MTLLoader.js"></script>
+  <script src="lib/loaders/STLLoader.js"></script>
+  <script src="lib/loaders/GLTFLoader.js"></script>
+  <script src="lib/SceneUtils.js"></script>  -->
+
+  <script src="js/app.js" defer></script>
+
+  <link href="styles/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div id="info">Žaidimas "Labirintas"</div>
+  <div id="Win"><span style="font-size:40px">LAIMĖJOTE!</span></div>
+  <div id="lose"><span style="font-size:40px">PRALAIMĖJOTE!</span></br>Žaidimas persikraus už 2 sekundžių.</div>
+  <div id="begin"><span style="font-size:40px">ŽAIDIMO PRADŽIA!</span></BR>
+  Raskite išėjimą iš labirinto!
+  </div>
+  <div id="hurt"></div>
+  <div id="UHD"></div>
+    <div id="blocker">
+      <div id="instructions"><span style="font-size:40px">Paspausk, kad žaistum</span><br />
+        (Valdymas - W, A, S, D ir pelė)
+      </div> 
+    </div>
+
+
+  <div id="webgl-secne">
+  </div>
+  <div id="fps"></div>
+</body>
+</html>
