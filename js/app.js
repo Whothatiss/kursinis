@@ -237,8 +237,8 @@ function animate() {
                 time = performance.now();
         let delta = (time - prevTime) / 1000;
 
-        velocity.x -= velocity.x * player_speed * delta;
-        velocity.z -= velocity.z * player_speed * delta;
+        velocity.x -= velocity.x * 10 * delta;
+        velocity.z -= velocity.z * 10 * delta;
 
         direction.z = Number(moveBackward) - Number(moveForward);
         direction.x = Number(moveRight) - Number(moveLeft);
@@ -372,13 +372,6 @@ function createMaze(){
         }
     }
 
-    function getCellType(v) {
-
-        switch (v) {
-            case 1:
-        }
-    }
-
     map1.forEach((_, z) => {
         map1[z].forEach((v, x) => {
             if (v !== 0) {
@@ -387,7 +380,7 @@ function createMaze(){
                 const h = 20;
                 const d = 20;
                 const MazeWallGeo = new THREE.BoxGeometry(w, h, d);
-                const MazeWallMat = getCellType(v);
+                const MazeWallMat = new THREE.MeshLambertMaterial({color: 0xFF0000, side: THREE.DoubleSide});
                 const MazeWall = new THREE.Mesh(MazeWallGeo, MazeWallMat);
                 const _x = x * w + (w / 2);
                 const _y = getCellYPosition(v, h);
