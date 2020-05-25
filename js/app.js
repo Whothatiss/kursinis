@@ -23,6 +23,7 @@ let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let maze = null;
+const MazeWall = null;
 let win = document.getElementById('Win');
 let begin = document.getElementById('begin');
 let hurt = document.getElementById('hurt');
@@ -36,7 +37,30 @@ let direction = new THREE.Vector3();
 
 let hit = false;
 let runAnim = true;
+const map1 = [
+  /* 1 */[1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+  /* 0 */[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /* 0 */[1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+  /* 0 */[1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  /* 0 */[1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+  /* 6 */[1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1],
+  /* 7 */[1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+  /* 8 */[1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+  /* 9 */[1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+ /* 10 */[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+ /* 11 */[1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1],
+ /* 10 */[1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+ /* 10 */[1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
+ /* 10 */[1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+ /* 10 */[1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+ /* 16 */[1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+ /* 17 */[1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+ /* 18 */[1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+ /* 19 */[1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+ /* 00 */[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+ /* 01 */[1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1],
 
+];
 // Global variables
 
 function init() {
@@ -378,7 +402,43 @@ function createLights() {
   camera.add(light);
   light.target = camera;
 }
+function createMaze(){
+  function getCellYPosition(v, h) {
+        switch (v) {
+            case 1:
+                return h / 2;
+        }
+    }
 
+    function getCellType(v) {
+
+        switch (v) {
+            case 1:
+        }
+    }
+
+    map1.forEach((_, z) => {
+        map1[z].forEach((v, x) => {
+            if (v !== 0) {
+                //const y = 10;
+                const w = 20;
+                const h = 20;
+                const d = 20;
+                const MazeWallGeo = new THREE.BoxGeometry(w, h, d);
+                const MazeWallMat = getCellType(v);
+                const MazeWall = new THREE.Mesh(MazeWallGeo, MazeWallMat);
+                const _x = x * w + (w / 2);
+                const _y = getCellYPosition(v, h);
+                const _z = z * d + (d / 2);
+                MazeWall.position.set(_x, _y, _z);
+                MazeWall.geometry.computeBoundingBox();
+                scene.add(MazeWall);
+                objects.push(MazeWall);
+
+            }
+        })
+    });
+}
 // Meshes and other visible objects
 function createMeshes() {
 
@@ -391,26 +451,6 @@ function createMeshes() {
   ground.receiveShadow = true;
   ground.rotateX(-Math.PI / 2);
   scene.add(ground);
-
-  //maze
-  maze = new Maze({
-    cols: 10,         // amount of cell columns
-    rows: 10,         // amount of cell rows
-    scale: 20,        // scale of maze
-    thickness: 3,     // thickness of maze walls
-    depth: 15,        // height of maze walls
-    open: false,       // include start and end doors?
-    rnd: Math.random  // custom random sampler (between 0 and 1)
-});
-
-
-  const MazeMaterial = new THREE.MeshLambertMaterial({color: 0xF1F1EE});
-  const mazes = new THREE.Mesh(maze.geometry, MazeMaterial);
-  mazes.rotateX(-Math.PI / 2);
-  mazes.position.set(-90,7.5,80);
-  maze.castShadow = true;
-  scene.add(mazes);
-  objects.push(mazes);
 
   //Box maze start/exit material
   const BoxExitGeo = new THREE.BoxGeometry(20,20,30);
