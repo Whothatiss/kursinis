@@ -24,6 +24,7 @@ let moveLeft = false;
 let moveRight = false;
 let maze = null;
 const MazeWall = null;
+let time;
 let win = document.getElementById('Win');
 let begin = document.getElementById('begin');
 let hurt = document.getElementById('hurt');
@@ -233,41 +234,17 @@ function animate() {
 
     if (controls.isLocked === true) {
 
-        let time = performance.now();
+                time = performance.now();
         let delta = (time - prevTime) / 1000;
 
-        velocity.x -= velocity.x * 10 * delta;
-        velocity.z -= velocity.z * 10 * delta;
+        velocity.x -= velocity.x * player_speed * delta;
+        velocity.z -= velocity.z * player_speed * delta;
 
         direction.z = Number(moveBackward) - Number(moveForward);
         direction.x = Number(moveRight) - Number(moveLeft);
         direction.normalize();
-
-
-
-        if (direction.length() > 0) {
-
-            //let rotatedDirection = direction.clone();
-            //rotatedDirection.applyEuler(controls.getObject().rotation);
-
-            velocity.normalize();
-            raycaster.set(controls.getObject().position, velocity);
-
-            //console.log(controls.getObject().position);
-
-            let directionCast = raycaster.intersectObjects(objects);
-            //console.log(raycaster.intersectObjects(objects));
-
-            if (directionCast.length > 0 && directionCast[0].distance < 20000) {
-                console.log(directionCast.length);
-                console.log(directionCast[0].distance);
-                direction.multiplyScalar(0);
-                velocity.x *= 0;
-                velocity.z *= 0;
-            }
-
-        }
-
+      
+      
         velocity.z -= direction.z * 200.0 * delta;
         velocity.x += direction.x * 200.0 * delta;
 
@@ -275,21 +252,6 @@ function animate() {
         controls.moveForward(velocity.z * delta);
 
         controls.getObject().position.y += velocity.y * delta;
-
-
-        //raycaster.set(controls.getObject().position, scene);
-
-        //let intersects = raycaster.intersectObjects(objects.concat([ground]));
-        //console.log(raycaster.intersectObjects(objects.concat([ground])));
-
-        //if (intersects.length == 0 || intersects[0].distance < 10) {
-        //    velocity.y = Math.max(0, velocity.y);
-
-        //    let y = 10;
-        //    if (intersects.length > 0) y = intersects[0].point.y + 10;
-
-        //    controls.getObject().position.y = y;
-        //}
 
         prevTime = time;
 
