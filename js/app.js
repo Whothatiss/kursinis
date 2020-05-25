@@ -83,6 +83,7 @@ function init() {
   createCamera();
   createControls();
   createLights();
+  createMaze();
   createMeshes();
   createRenderer();
 
